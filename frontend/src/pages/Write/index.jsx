@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { recipeApi } from '../../api/recipeApi'; 
-import * as S from './Write.style';
+import './Write.scss'; // ✅ SCSS 연결
 
 const Write = () => {
   const navigate = useNavigate();
@@ -18,22 +18,17 @@ const Write = () => {
     }
   };
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!imageFile) return alert("레시피 사진을 등록해주세요!");
 
-    // 서버에 전송할 FormData 객체 생성
     const data = new FormData();
-    
-    // 현재 코드 상단의 useState 변수명인 title, content를 직접 사용해야 합니다.
-    data.append('title', title);     // formData.title (X) -> title (O)
-    data.append('content', content); // formData.content (X) -> content (O)
+    data.append('title', title);
+    data.append('content', content);
     data.append('image', imageFile);
 
     try {
       await recipeApi.createRecipe(data); 
-      
       alert("✨ 레시피가 성공적으로 등록되었습니다!");
       navigate('/');
     } catch (err) {
@@ -43,23 +38,24 @@ const handleSubmit = async (e) => {
   };
 
   return (
-    <S.WriteWrapper>
-      <S.Container>
-        <S.Header>
+    <div className="write-page">
+      <div className="write-container">
+        <header className="write-header">
           <h1>새 레시피 작성</h1>
           <p>나만의 특별한 요리 비법을 알려주세요!</p>
-        </S.Header>
+        </header>
 
-        <S.Form onSubmit={handleSubmit}>
-          <S.ImageSection>
-            <label htmlFor="image-input">
+        <form className="write-form" onSubmit={handleSubmit}>
+          {/* 이미지 섹션 */}
+          <div className="image-upload-section">
+            <label htmlFor="image-input" className="image-label">
               {preview ? (
-                <S.PreviewImage src={preview} alt="미리보기" />
+                <img src={preview} alt="미리보기" className="preview-image" />
               ) : (
-                <S.Placeholder>
+                <div className="placeholder">
                   <span className="icon">📷</span>
                   <span>요리 완성 사진을 등록하세요</span>
-                </S.Placeholder>
+                </div>
               )}
             </label>
             <input 
@@ -69,35 +65,41 @@ const handleSubmit = async (e) => {
               onChange={handleImageChange} 
               hidden 
             />
-          </S.ImageSection>
+          </div>
 
-          <S.InputGroup>
-            <S.Label>제목</S.Label>
-            <S.Input 
+          <div className="input-group">
+            <label className="label">제목</label>
+            <input 
+              className="input-field"
               placeholder="예: 백종원표 제육볶음" 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
             />
-          </S.InputGroup>
+          </div>
 
-          <S.InputGroup>
-            <S.Label>설명</S.Label>
-            <S.TextArea 
+          <div className="input-group">
+            <label className="label">설명</label>
+            <textarea 
+              className="textarea-field"
               placeholder="요리 순서와 팁을 자세히 적어주세요." 
               value={content}
               onChange={(e) => setContent(e.target.value)}
               required
             />
-          </S.InputGroup>
+          </div>
 
-          <S.BtnGroup>
-            <S.CancelBtn type="button" onClick={() => navigate(-1)}>취소</S.CancelBtn>
-            <S.SubmitBtn type="submit">등록하기</S.SubmitBtn>
-          </S.BtnGroup>
-        </S.Form>
-      </S.Container>
-    </S.WriteWrapper>
+          <div className="btn-group">
+            <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>
+              취소
+            </button>
+            <button type="submit" className="submit-btn">
+              등록하기
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

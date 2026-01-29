@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../../api/authApi';
-import * as S from './Signup.style';
+import './Signup.scss'; // ✅ SCSS 연결
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -20,14 +20,13 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. 유효성 검사
+    // 1. 유효성 검사 (로직 유지)
     if (formData.password !== formData.confirmPassword) {
       return alert("비밀번호가 일치하지 않습니다.");
     }
 
     try {
-      // 2. 백엔드 회원가입 API 호출
-      // 백엔드 UserCreate 스키마 필드명과 일치시킴
+      // 2. 백엔드 회원가입 API 호출 (로직 유지)
       await authApi.signup({
         username: formData.username,
         email: formData.email,
@@ -37,60 +36,63 @@ const Signup = () => {
       alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
       navigate('/login');
     } catch (error) {
-      // 3. 에러 처리 (이메일 중복 등)
+      // 3. 에러 처리 (로직 유지)
       const errorMsg = error.response?.data?.detail || "회원가입에 실패했습니다.";
       alert(errorMsg);
     }
   };
 
   return (
-    <S.Container>
-      <S.Title>회원가입</S.Title>
-      <S.Form onSubmit={handleSubmit}>
-        <S.Input 
-          name="username" 
-          placeholder="사용자 이름" 
-          value={formData.username}
-          onChange={handleChange} 
-          required 
-        />
-        <S.Input 
-          name="email" 
-          type="email" 
-          placeholder="이메일 (ID로 사용됨)" 
-          value={formData.email}
-          onChange={handleChange} 
-          required 
-        />
-        <S.Input 
-          name="password" 
-          type="password" 
-          placeholder="비밀번호" 
-          value={formData.password}
-          onChange={handleChange} 
-          required 
-        />
-        <S.Input 
-          name="confirmPassword" 
-          type="password" 
-          placeholder="비밀번호 확인" 
-          value={formData.confirmPassword}
-          onChange={handleChange} 
-          required 
-        />
-        <S.SubmitButton type="submit">가입하기</S.SubmitButton>
-      </S.Form>
-      
-      <p style={{ marginTop: '20px', fontSize: '0.9rem', color: '#666' }}>
-        이미 계정이 있으신가요? 
-        <span 
-          onClick={() => navigate('/login')} 
-          style={{ color: '#4ecdc4', cursor: 'pointer', marginLeft: '5px', textDecoration: 'underline' }}
-        >
-          로그인
-        </span>
-      </p>
-    </S.Container>
+    <div className="signup-page">
+      <div className="signup-container">
+        <h2 className="signup-title">회원가입</h2>
+        <form className="signup-form" onSubmit={handleSubmit}>
+          <input 
+            className="signup-input"
+            name="username" 
+            placeholder="사용자 이름" 
+            value={formData.username}
+            onChange={handleChange} 
+            required 
+          />
+          <input 
+            className="signup-input"
+            name="email" 
+            type="email" 
+            placeholder="이메일 (ID로 사용됨)" 
+            value={formData.email}
+            onChange={handleChange} 
+            required 
+          />
+          <input 
+            className="signup-input"
+            name="password" 
+            type="password" 
+            placeholder="비밀번호" 
+            value={formData.password}
+            onChange={handleChange} 
+            required 
+          />
+          <input 
+            className="signup-input"
+            name="confirmPassword" 
+            type="password" 
+            placeholder="비밀번호 확인" 
+            value={formData.confirmPassword}
+            onChange={handleChange} 
+            required 
+          />
+          <button className="signup-submit-btn" type="submit">가입하기</button>
+        </form>
+        
+        <div className="signup-footer">
+          이미 계정이 있으신가요? 
+          <span className="login-link" onClick={() => navigate('/login')}>
+            로그인
+          </span>
+        </div>
+      </div>
+    </div>
   );
 };
 

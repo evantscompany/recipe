@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { recipeApi } from '../../api/recipeApi';
 import { commentApi } from '../../api/comment';
 import CommentItem from './CommentItem'; 
-import * as S from './RecipeDetail.style'; 
+import './RecipeDetail.scss'; // ✅ SCSS 연결
 
 const RecipeDetail = () => {
   const { id } = useParams();
@@ -13,12 +13,10 @@ const RecipeDetail = () => {
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-
-  // --- [추가] 리액션 상태 관리 ---
   const [reactionStats, setReactionStats] = useState({
     likes: 0,
     dislikes: 0,
-    myReaction: null // 'like', 'dislike' 또는 null
+    myReaction: null 
   });
 
   useEffect(() => {
@@ -33,16 +31,12 @@ const RecipeDetail = () => {
         const recipeData = recipeRes.data;
         setRecipe(recipeData);
         setComments(commentRes.data);
-
-        // --- [추가] 초기 로딩 시 리액션 정보 세팅 ---
         setReactionStats({
           likes: recipeData.like_count || 0,
           dislikes: recipeData.dislike_count || 0,
           myReaction: recipeData.my_reaction || null
         });
-
       } catch (error) {
-        console.error("데이터 로딩 실패:", error);
         if (error.response?.status === 404) navigate('/');
       } finally {
         setLoading(false);
@@ -51,24 +45,17 @@ const RecipeDetail = () => {
     fetchAllData();
   }, [id, navigate]);
 
-  // --- [추가] 리액션 토글 핸들러 ---
   const handleReaction = async (type) => {
     try {
-      // 백엔드 엔드포인트에 맞춰 호출 (예: /recipes/{id}/reaction)
-      const res = await recipeApi.postReaction(id, {reaction_type:type});
-      
-      // 백엔드에서 리액션 처리 후 반환하는 최신 데이터를 적용
+      const res = await recipeApi.postReaction(id, {reaction_type: type});
       setReactionStats({
         likes: res.data.like_count,
         dislikes: res.data.dislike_count,
         myReaction: res.data.my_reaction
       });
     } catch (error) {
-      if (error.response?.status === 401) {
-        alert("로그인이 필요한 기능입니다.");
-      } else {
-        alert("처리에 실패했습니다.");
-      }
+      if (error.response?.status === 401) alert("로그인이 필요한 기능입니다.");
+      else alert("처리에 실패했습니다.");
     }
   };
 
@@ -103,69 +90,65 @@ const RecipeDetail = () => {
     }
   };
 
-  if (loading) return <S.Container style={{textAlign: 'center'}}>로딩 중...</S.Container>;
-  if (!recipe) return <S.Container style={{textAlign: 'center'}}>레시피를 찾을 수 없습니다.</S.Container>;
+  if (loading) return <div className="loading-state">로딩 중...</div>;
+  if (!recipe) return <div className="error-state">레시피를 찾을 수 없습니다.</div>;
 
   return (
-    <S.Container>
-      <S.ActionButton onClick={() => navigate(-1)} style={{fontSize: '1rem', marginBottom: '20px'}}>
+    <div className="recipe-detail-page">
+      <button className="back-btn" onClick={() => navigate(-1)}>
         ← 뒤로가기
-      </S.ActionButton>
+      </button>
 
-      <S.RecipeCard>
-        <S.RecipeImage 
+      <article className="recipe-card">
+        <img 
+          className="recipe-main-image"
           src={recipe.image_url?.startsWith('http') ? recipe.image_url : `http://localhost:8000${recipe.image_url}`} 
           alt={recipe.title} 
         />
 
-        <S.ContentArea>
-          <S.CategoryTag>{recipe.category || '일반'}</S.CategoryTag>
-          <h1 style={{ marginTop: '15px', fontSize: '2.5rem' }}>{recipe.title}</h1>
+        <div className="recipe-body">
+          <span className="category-tag">{recipe.category || '일반'}</span>
+          <h1 className="recipe-title">{recipe.title}</h1>
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#888', margin: '20px 0', borderBottom: '1px solid #eee', paddingBottom: '20px' }}>
-            <span>작성자 ID: {recipe.user_id}</span>
-            <span>작성일: {new Date(recipe.created_at).toLocaleDateString()}</span>
+          <div className="recipe-meta">
+            <span>👤 작성자 ID: {recipe.user_id}</span>
+            <span>📅 작성일: {new Date(recipe.created_at).toLocaleDateString()}</span>
           </div>
 
-          <div style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-wrap', marginBottom: '40px' }}>
+          <div className="recipe-content">
             {recipe.content}
           </div>
 
-          {/* --- [추가] 리액션 버튼 영역 --- */}
-          <S.ReactionSection>
-            <S.ReactionButton 
-              $active={reactionStats.myReaction === 'like'} 
-              $color="#4ecdc4" 
+          <div className="reaction-section">
+            <button 
+              className={`reaction-btn like ${reactionStats.myReaction === 'like' ? 'active' : ''}`}
               onClick={() => handleReaction('like')}
             >
               👍 좋아요 {reactionStats.likes}
-            </S.ReactionButton>
-
-            <S.ReactionButton 
-              $active={reactionStats.myReaction === 'dislike'} 
-              $color="#ff6b6b" 
+            </button>
+            <button 
+              className={`reaction-btn dislike ${reactionStats.myReaction === 'dislike' ? 'active' : ''}`}
               onClick={() => handleReaction('dislike')}
             >
               👎 별로예요 {reactionStats.dislikes}
-            </S.ReactionButton>
-          </S.ReactionSection>
+            </button>
+          </div>
 
-          <S.CommentSection>
+          <section className="comment-section">
             <h3>💬 댓글 {comments.length}개</h3>
             
-            <form onSubmit={handleCommentSubmit} style={{ margin: '20px 0', display: 'flex', gap: '10px' }}>
-              <S.StyledInput 
+            <form className="comment-form" onSubmit={handleCommentSubmit}>
+              <input 
+                className="comment-input"
                 type="text" 
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="댓글을 남겨보세요..."
               />
-              <button type="submit" style={{ padding: '10px 20px', backgroundColor: '#4ecdc4', color: '#fff', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>
-                등록
-              </button>
+              <button className="comment-submit-btn" type="submit">등록</button>
             </form>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <div className="comment-list">
               {comments.map((comment) => (
                 <CommentItem 
                   key={comment.id} 
@@ -175,10 +158,10 @@ const RecipeDetail = () => {
                 />
               ))}
             </div>
-          </S.CommentSection>
-        </S.ContentArea>
-      </S.RecipeCard>
-    </S.Container>
+          </section>
+        </div>
+      </article>
+    </div>
   );
 };
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import * as S from './RecipeDetail.style';
 
 const CommentItem = ({ comment, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -12,38 +11,39 @@ const CommentItem = ({ comment, onUpdate, onDelete }) => {
   };
 
   return (
-    <S.CommentWrapper $isEditing={isEditing}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ fontWeight: 'bold' }}>👤 {comment.username}</div>
-        <div>
+    <div className={`comment-item ${isEditing ? 'editing' : ''}`}>
+      <div className="comment-header">
+        <div className="comment-user">👤 {comment.username}</div>
+        <div className="comment-actions">
           {isEditing ? (
             <>
-              <S.ActionButton color="#4a90e2" onClick={handleSave}>저장</S.ActionButton>
-              <S.ActionButton onClick={() => { setIsEditing(false); setEditContent(comment.content); }}>취소</S.ActionButton>
+              <button className="action-btn save" onClick={handleSave}>저장</button>
+              <button className="action-btn cancel" onClick={() => { setIsEditing(false); setEditContent(comment.content); }}>취소</button>
             </>
           ) : (
             <>
-              <S.ActionButton color="#4ecdc4" onClick={() => setIsEditing(true)}>수정</S.ActionButton>
-              <S.ActionButton color="#ff6b6b" onClick={() => onDelete(comment.id)}>삭제</S.ActionButton>
+              <button className="action-btn edit" onClick={() => setIsEditing(true)}>수정</button>
+              <button className="action-btn delete" onClick={() => onDelete(comment.id)}>삭제</button>
             </>
           )}
         </div>
       </div>
-      <div style={{ marginTop: '10px' }}>
+      <div className="comment-body">
         {isEditing ? (
-          <S.StyledInput 
+          <input 
+            className="edit-input"
             value={editContent} 
             onChange={(e) => setEditContent(e.target.value)} 
             autoFocus 
           />
         ) : (
-          <div style={{ color: '#333', whiteSpace: 'pre-wrap' }}>{comment.content}</div>
+          <div className="comment-text">{comment.content}</div>
         )}
       </div>
-      <div style={{ fontSize: '0.8rem', color: '#999', marginTop: '8px' }}>
+      <div className="comment-date">
         {new Date(comment.created_at).toLocaleString()}
       </div>
-    </S.CommentWrapper>
+    </div>
   );
 };
 
