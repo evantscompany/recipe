@@ -1,75 +1,102 @@
 @use "../../styles/variables" as *;
-@use "sass:color";
 
 .signup-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - $nav-height - 100px);
+  min-height: 90vh; // 입력 항목이 많으므로 높이를 넉넉히
+  padding: 40px 20px;
 
   .signup-container {
     width: 100%;
-    max-width: 400px;
-    padding: 40px;
-    background: $white;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    max-width: 480px; // 로그인보다 살짝 더 넓게 잡으면 안정적입니다
+    padding: 50px 40px;
+    background: white;
+    border-radius: 32px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
     text-align: center;
-  }
+    animation: fadeIn 0.6s ease-out;
 
-  .signup-title {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
-    color: $text-color;
-    font-weight: bold;
-  }
+    .signup-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #222;
+      margin-bottom: 30px;
+      letter-spacing: -1px;
+    }
 
-  .signup-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px; // 입력창 사이의 간격
 
-    .signup-input {
-      padding: 12px 15px;
-      border: 1px solid $border-color;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-family: inherit;
-      transition: border-color 0.2s;
+      .signup-input {
+        width: 100%;
+        padding: 16px 20px;
+        border: 2px solid #efefef;
+        border-radius: 16px;
+        font-size: 1rem;
+        transition: all 0.2s ease;
 
-      &:focus {
-        outline: none;
-        border-color: $secondary-color; // 민트색 포인트
+        &:focus {
+          outline: none;
+          border-color: #E60023; // 핀터레스트 레드
+          background-color: #fff;
+          box-shadow: 0 0 0 4px rgba(230, 0, 35, 0.1);
+        }
+
+        &::placeholder {
+          color: #bbb;
+        }
+      }
+
+      .signup-submit-btn {
+        margin-top: 15px;
+        padding: 16px;
+        background-color: #E60023;
+        color: white;
+        border: none;
+        border-radius: 28px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: #ad001a;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(230, 0, 35, 0.3);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
       }
     }
 
-    .signup-submit-btn {
-      margin-top: 10px;
-      padding: 14px;
-      background-color: $secondary-color;
-      color: white;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      transition: background 0.2s;
+    .signup-footer {
+      margin-top: 30px;
+      font-size: 0.95rem;
+      color: #767676;
 
-      &:hover {
-        background-color: color.adjust($secondary-color, $lightness: -5%);
+      .login-link {
+        color: #222;
+        font-weight: 800;
+        cursor: pointer;
+        margin-left: 8px;
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
+        transition: border-color 0.2s;
+
+        &:hover {
+          border-color: #222;
+        }
       }
     }
   }
+}
 
-  .signup-footer {
-    margin-top: 25px;
-    font-size: 0.9rem;
-    color: #666;
-
-    .login-link {
-      color: $secondary-color;
-      cursor: pointer;
-      margin-left: 8px;
-      text-decoration: underline;
-      font-weight: 600;
-    }
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

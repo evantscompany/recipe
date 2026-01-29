@@ -1,0 +1,49 @@
+@use "../../styles/variables" as *;
+
+.my-recipes-page {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease-in-out;
+
+  .page-header {
+    margin-bottom: 50px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 30px;
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #666;
+      font-size: 1.1rem;
+      strong { color: $primary-color; }
+    }
+  }
+
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+  }
+
+  .empty-box {
+    text-align: center;
+    padding: 100px 20px;
+    background: #fdfdfd;
+    border: 2px dashed #eee;
+    border-radius: 30px;
+    color: #999;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

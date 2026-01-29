@@ -1,75 +1,75 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { authApi } from '../../api/authApi';
-// 스타일 컴포넌트를 사용 중이라면 아래 주석을 해제하세요
-// import * as S from '../Signup/Signup.style'; 
+import './Login.scss'; // ✅ SCSS 연결
 
-const LoginPage = () => { // 1. 컴포넌트 함수 시작
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-  e.preventDefault();
-  try {
-    const data = await authApi.login(email, password);
-    
-    if (data.access_token) {
-      // ✅ 1. 토큰과 이름을 로컬 스토리지에 확실히 저장
-      localStorage.setItem('access_token', data.access_token);
-      localStorage.setItem('username', data.username); // 백엔드에서 username을 준다고 했으니!
+    e.preventDefault();
+    try {
+      const data = await authApi.login(email, password);
       
-      alert(`${data.username}님, 환영합니다!`);
-      navigate('/'); 
-      window.location.reload(); // ✅ 2. 메인으로 가면서 상태를 새로고침 (가장 확실한 방법)
+      if (data.access_token) {
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('username', data.username);
+        
+        alert(`${data.username}님, 환영합니다!`);
+        navigate('/'); 
+        window.location.reload(); 
+      }
+    } catch (err) {
+      alert('로그인 실패! 이메일이나 비밀번호를 확인해주세요.');
     }
-  } catch (err) {
-    alert('로그인 실패!');
-  }
-}; // 2. 로그인 핸들러 끝
+  };
 
-  return ( // 3. UI 렌더링 시작
-    <div className="login-container" style={{ maxWidth: '400px', margin: '80px auto', textAlign: 'center' }}>
-      <h2>로그인</h2>
-      <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <input 
-          type="email" 
-          placeholder="이메일" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required 
-          style={{ padding: '10px' }}
-        />
-        <input 
-          type="password" 
-          placeholder="비밀번호" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
-          style={{ padding: '10px' }}
-        />
-        <button type="submit" style={{ padding: '10px', backgroundColor: '#4ecdc4', color: 'white', border: 'none', cursor: 'pointer' }}>
-          로그인
-        </button>
-      </form>
+  return (
+    <div className="auth-page">
+      <div className="auth-card">
+        {/* 로고 영역 */}
+        <Link to="/" className="auth-logo">RECIPE</Link>
+        
+        <h2>로그인을 환영합니다</h2>
+        <p className="auth-subtitle">맛있는 레시피가 당신을 기다리고 있어요!</p>
 
-      <div style={{ marginTop: '20px', fontSize: '0.9rem', color: '#666' }}>
-        처음 오셨나요? 
-        <span 
-          onClick={() => navigate('/signup')} 
-          style={{ 
-            color: '#4ecdc4', 
-            cursor: 'pointer', 
-            marginLeft: '8px', 
-            fontWeight: 'bold',
-            textDecoration: 'underline' 
-          }}
-        >
-          회원가입
-        </span>
+        <form onSubmit={handleLogin} className="auth-form">
+          <div className="input-group">
+            <label>이메일</label>
+            <input 
+              type="email" 
+              placeholder="example@recipe.com" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
+            />
+          </div>
+
+          <div className="input-group">
+            <label>비밀번호</label>
+            <input 
+              type="password" 
+              placeholder="비밀번호를 입력하세요" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
+            />
+          </div>
+
+          <button type="submit" className="auth-submit-btn">
+            로그인
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          처음 오셨나요? 
+          <Link to="/signup" className="signup-link">회원가입</Link>
+        </div>
       </div>
     </div>
-  ); // 3. UI 렌더링 끝
-}; // 1. 컴포넌트 함수 끝
+  );
+};
 
-export default LoginPage; // export 이름도 맞춰줍니다.
+export default LoginPage;

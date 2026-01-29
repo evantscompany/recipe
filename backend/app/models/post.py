@@ -1,3 +1,5 @@
+# post.py
+
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from app.database import Base

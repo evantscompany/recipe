@@ -7,6 +7,9 @@ export const recipeApi = {
   // 게시글 전체 목록 가져오기
   getRecipes: () => api.get('/api/v1/recipes/'),
   
+  // 내 레시피 목록 가져오기
+  getMyRecipes: () => api.get('/api/v1/recipes/my/all'),
+
   // 게시글 상세 조회
   getRecipeDetail: (id) => api.get(`/api/v1/recipes/${id}`),
   

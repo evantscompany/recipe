@@ -1,0 +1,125 @@
+@use "../../styles/variables" as *;
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; // 사이드바가 있으므로 전체 높이에서 적절히 조절
+  padding: 20px;
+
+  .auth-card {
+    width: 100%;
+    max-width: 450px;
+    padding: 50px 40px;
+    background: #fff;
+    border-radius: 32px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    animation: fadeIn 0.6s ease-out;
+
+    .auth-logo {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #E60023; // 핀터레스트 레드
+      text-decoration: none;
+      letter-spacing: -1.5px;
+      margin-bottom: 15px;
+      display: inline-block;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #222;
+      margin-bottom: 8px;
+    }
+
+    .auth-subtitle {
+      font-size: 0.95rem;
+      color: #767676;
+      margin-bottom: 40px;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .input-group {
+        text-align: left;
+
+        label {
+          display: block;
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: #333;
+          margin-bottom: 8px;
+          margin-left: 5px;
+        }
+
+        input {
+          width: 100%;
+          padding: 14px 20px;
+          border: 2px solid #efefef;
+          border-radius: 16px;
+          font-size: 1rem;
+          transition: all 0.2s ease;
+
+          &:focus {
+            outline: none;
+            border-color: #E60023;
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(230, 0, 35, 0.1);
+          }
+        }
+      }
+
+      .auth-submit-btn {
+        margin-top: 10px;
+        padding: 16px;
+        background-color: #E60023;
+        color: white;
+        border: none;
+        border-radius: 28px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: #ad001a;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(230, 0, 35, 0.3);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+
+    .auth-footer {
+      margin-top: 35px;
+      font-size: 0.95rem;
+      color: #767676;
+
+      .signup-link {
+        color: #222;
+        font-weight: 800;
+        text-decoration: none;
+        margin-left: 8px;
+        border-bottom: 2px solid transparent;
+        transition: border-color 0.2s;
+
+        &:hover {
+          border-color: #222;
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

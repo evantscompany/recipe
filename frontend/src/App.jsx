@@ -6,25 +6,23 @@ import RecipeDetail from './pages/RecipeDetail';
 import Write from './pages/Write';
 import LoginPage from './pages/Login';
 import Signup from './pages/Signup';
-
-// ✅ 정확한 경로: src/styles/main.scss
 import './styles/main.scss'; 
+import MyRecipes from './pages/MyRecipes';
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        {/* 모든 페이지 공통 네비게이션 */}
+      <div className="App app-layout">
         <Navbar /> 
-
-        {/* main.scss의 .container 설정을 따름 */}
-        <main className="container">
+        <main className="main-content">
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/recipe/:id" element={<RecipeDetail />} />
             <Route path="/write" element={<Write />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path='/signup' element={<Signup/>}/>
+            <Route path="/my-recipes" element={<MyRecipes />} />
+
           </Routes>
         </main>
       </div>

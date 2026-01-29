@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const CommentItem = ({ comment, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
+  const currentUser = localStorage.getItem('username')
 
   const handleSave = () => {
     if (!editContent.trim()) return;
@@ -15,7 +16,9 @@ const CommentItem = ({ comment, onUpdate, onDelete }) => {
       <div className="comment-header">
         <div className="comment-user">👤 {comment.username}</div>
         <div className="comment-actions">
-          {isEditing ? (
+          {/* 작성자 본인일 때만 액션 버튼 노출 */}
+          {currentUser === comment.username && (
+          isEditing ? (
             <>
               <button className="action-btn save" onClick={handleSave}>저장</button>
               <button className="action-btn cancel" onClick={() => { setIsEditing(false); setEditContent(comment.content); }}>취소</button>
@@ -25,6 +28,7 @@ const CommentItem = ({ comment, onUpdate, onDelete }) => {
               <button className="action-btn edit" onClick={() => setIsEditing(true)}>수정</button>
               <button className="action-btn delete" onClick={() => onDelete(comment.id)}>삭제</button>
             </>
+          )
           )}
         </div>
       </div>

@@ -1,142 +1,270 @@
-@use "sass:color";
 @use "../../styles/variables" as *;
 
 .recipe-detail-page {
-  padding: 40px 0;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  animation: fadeIn 0.5s ease-in-out;
 
   .back-btn {
-    margin-bottom: 20px;
-    color: #666;
-    &:hover { color: $text-color; }
-  }
-
-  .recipe-card {
-    background: $white;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-
-    .recipe-main-image {
-      width: 100%;
-      max-height: 500px;
-      object-fit: cover;
-    }
-
-    .recipe-body {
-      padding: 40px;
-
-      .category-tag {
-        background: $gray-light;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        color: $secondary-color;
-        font-weight: 600;
-      }
-
-      .recipe-title {
-        font-size: 2.5rem;
-        margin-top: 15px;
-      }
-
-      .recipe-meta {
-        display: flex;
-        justify-content: space-between;
-        color: #888;
-        margin: 20px 0;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #eee;
-      }
-
-      .recipe-content {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        white-space: pre-wrap;
-        margin-bottom: 40px;
-      }
-    }
-  }
-
-  // 리액션 버튼 섹션
-  .reaction-section {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 24px;
     display: flex;
-    gap: 15px;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+
+    &:hover {
+      color: $primary-color;
+      transform: translateX(-5px);
+    }
+  }
+}
+
+.recipe-card {
+  background: white;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+  margin-bottom: 40px;
+
+  .recipe-main-image {
+    width: 100%;
+    max-height: 550px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .recipe-body {
+    padding: 50px;
+
+    .category-tag {
+      background-color: rgba($primary-color, 0.1);
+      color: $primary-color;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .recipe-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #111;
+      margin-bottom: 24px;
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
+
+    .recipe-meta {
+      display: flex;
+      gap: 24px;
+      color: #999;
+      font-size: 0.95rem;
+      border-bottom: 1px solid #f1f1f1;
+      padding-bottom: 30px;
+      margin-bottom: 40px;
+    }
+
+    .recipe-content {
+      font-size: 1.2rem;
+      line-height: 1.9;
+      color: #333;
+      white-space: pre-wrap;
+      margin-bottom: 60px;
+    }
+  }
+}
+
+// ✅ 반응(좋아요/별로예요) 섹션
+.reaction-section {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 60px;
+  justify-content: center;
+
+  .reaction-btn {
+    padding: 14px 28px;
+    border-radius: 50px;
+    border: 1px solid #eee;
+    background: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      background-color: #f9f9f9;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+    }
+
+    &.like.active {
+      background-color: #E60023;
+      color: white;
+      border-color: #E60023;
+    }
+
+    &.dislike.active {
+      background-color: #333;
+      color: white;
+      border-color: #333;
+    }
+  }
+}
+
+// ✅ 댓글 섹션 전체
+.comment-section {
+  border-top: 1px solid #f1f1f1;
+  padding-top: 50px;
+
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+    color: #111;
+    font-weight: 800;
+  }
+
+  .comment-form {
+    display: flex;
+    gap: 12px;
     margin-bottom: 40px;
 
-    .reaction-btn {
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-weight: bold;
-      border: 1px solid #eee;
+    .comment-input {
+      flex: 1;
+      padding: 18px 24px;
+      border-radius: 16px;
+      border: 2px solid #f1f1f1;
+      background-color: #f9f9f9;
+      font-size: 1rem;
+      outline: none;
       transition: all 0.2s;
 
-      &.like {
-        color: $secondary-color;
-        &.active { background: $secondary-color; color: white; }
-        &:hover:not(.active) { background: color.adjust($secondary-color, $lightness: 40%); }
-      }
-
-      &.dislike {
-        color: $primary-color;
-        &.active { background: $primary-color; color: white; }
-        &:hover:not(.active) { background: color.adjust($primary-color, $lightness: 40%); }
+      &:focus {
+        border-color: $primary-color;
+        background-color: white;
+        box-shadow: 0 4px 12px rgba($primary-color, 0.1);
       }
     }
-  }
 
-  // 댓글 섹션
-  .comment-section {
-    border-top: 2px solid $gray-light;
-    padding-top: 30px;
+    .comment-submit-btn {
+      padding: 0 30px;
+      background-color: #111;
+      color: white;
+      border-radius: 16px;
+      border: none;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
 
-    .comment-form {
-      display: flex;
-      gap: 10px;
-      margin: 20px 0;
-
-      .comment-input {
-        flex: 1;
-        padding: 12px;
-        border: 1px solid $border-color;
-        border-radius: 8px;
-      }
-
-      .comment-submit-btn {
-        background: $secondary-color;
-        color: white;
-        padding: 0 20px;
-        border-radius: 8px;
-        font-weight: bold;
+      &:hover {
+        background-color: $primary-color;
       }
     }
   }
 }
 
-// 개별 댓글 스타일
-.comment-item {
-  padding: 15px;
-  background: #fdfdfd;
-  border-radius: 8px;
-  border: 1px solid #f0f0f0;
+// ✅ 개별 댓글 아이템 (CommentItem.jsx 대상)
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
-  .comment-header {
-    display: flex;
-    justify-content: space-between;
-    
-    .comment-user { font-weight: bold; }
-    
-    .action-btn {
+  .comment-item {
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 20px;
+    border: 1px solid #f1f1f1;
+    transition: all 0.2s ease;
+
+    &.editing {
+      border-color: $primary-color;
+      background-color: #fffafb;
+    }
+
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+
+      .comment-user {
+        font-weight: 800;
+        color: #111;
+        font-size: 1rem;
+      }
+
+      .comment-actions {
+        display: flex;
+        gap: 8px;
+
+        .action-btn {
+          background: none;
+          border: none;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          padding: 6px 10px;
+          border-radius: 8px;
+          transition: all 0.2s;
+
+          &.edit { color: #999; &:hover { background: #f1f1f1; color: #111; } }
+          &.delete { color: #ffb8b8; &:hover { background: #fff0f0; color: #ff5252; } }
+          &.save { color: white; background: $primary-color; }
+          &.cancel { color: #666; background: #eee; }
+        }
+      }
+    }
+
+    .comment-body {
+      .comment-text {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #444;
+      }
+
+      .edit-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid $primary-color;
+        border-radius: 12px;
+        font-size: 1rem;
+        outline: none;
+      }
+    }
+
+    .comment-date {
+      margin-top: 14px;
       font-size: 0.8rem;
-      margin-left: 10px;
-      &.edit { color: $secondary-color; }
-      &.delete { color: $primary-color; }
+      color: #bbb;
     }
   }
+}
 
-  .comment-body {
-    margin: 10px 0;
-    .edit-input { width: 100%; padding: 8px; border: 1px solid $secondary-color; border-radius: 4px; }
+// 애니메이션 및 반응형
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .recipe-card .recipe-body {
+    padding: 30px 20px;
+    .recipe-title { font-size: 2rem; }
   }
-
-  .comment-date { font-size: 0.75rem; color: #999; }
+  .reaction-section .reaction-btn {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
 }

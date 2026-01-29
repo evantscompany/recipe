@@ -1,38 +1,36 @@
-// src/assets/styles/main.scss
-@use "variables" as *;
+@use './variables' as *;
 
-// 리셋 및 기본 설정
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-  background-color: $bg-color;
-  color: $text-color;
-  line-height: 1.6;
+  background-color: #f8f9fa; // 핀터레스트 특유의 밝은 배경
+  font-family: 'Pretendard', sans-serif;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+.app-layout {
+  display: flex; // 가로 배치
 
-ul, ol {
-  list-style: none;
-}
+  .main-content {
+    flex: 1;
+    margin-left: 240px; // 사이드바 공간 확보
+    width: calc(100% - 240px);
+    padding: 40px;
+    min-height: 100vh;
 
-button {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-family: inherit;
-}
+    @media (max-width: 1024px) {
+      margin-left: 80px; // 슬림 사이드바 대응 (필요시)
+      width: calc(100% - 80px);
+    }
 
-.container {
-  max-width: $desktop;
-  margin: 0 auto;
-  padding: 0 20px;
+    @media (max-width: 768px) {
+      margin-left: 0;
+      width: 100%;
+      margin-bottom: 70px; // 하단 탭바 대응
+      padding: 20px;
+    }
+  }
 }

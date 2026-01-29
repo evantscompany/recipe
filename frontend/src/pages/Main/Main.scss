@@ -1,83 +1,79 @@
 @use "../../styles/variables" as *;
 
 .main-page {
-  padding: 20px;
-
-  .main-status {
-    padding: 100px 0;
-    text-align: center;
-    &.error { color: $primary-color; }
-  }
+  width: 100%;
 
   .main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    h2 { font-size: 1.5rem; color: $text-color; }
+    
+    h2 { font-size: 1.8rem; color: #333; }
   }
 
-  .empty-state {
-    text-align: center;
-    padding: 100px 0;
-    color: #888;
-  }
-
-  // ✅ 여기가 핵심: 그리드 레이아웃 관리
+  // ✅ 핀터레스트 스타일 와이드 메이슨리
   .recipe-grid {
-    display: grid;
-    // 기본적으로 반응형: 최소 280px 유지하며 꽉 채움
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-    gap: 25px;
+    column-count: 5; // 아주 큰 화면에서 5열
+    column-gap: 20px;
+    width: 100%;
+    margin: 0; // 중앙 정렬 해제하여 꽉 채움
+
+    @media (max-width: 1600px) { column-count: 4; }
+    @media (max-width: 1200px) { column-count: 3; }
+    @media (max-width: 900px) { column-count: 2; }
+    @media (max-width: 500px) { column-count: 1; }
   }
 }
 
-// 개별 카드 스타일
 .recipe-item-card {
-  border: 1px solid #eee;
-  border-radius: 12px;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 20px;
+  break-inside: avoid;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #efefef;
   overflow: hidden;
-  background: $white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+  cursor: pointer;
 
   &:hover {
-    transform: translateY(-5px); // 마우스 올리면 살짝 들리는 효과
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
   }
 
   .card-image-wrapper {
     width: 100%;
-    height: 180px;
-    background-color: $gray-light;
     img {
       width: 100%;
-      height: 100%;
+      height: auto; // 비율 유지
+      display: block;
       object-fit: cover;
     }
   }
 
   .card-content {
-    padding: 20px;
+    padding: 16px;
 
     .card-title {
-      font-size: 1.2rem;
-      margin-bottom: 12px;
-      color: $text-color;
-      // 제목이 너무 길면 ... 처리
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.4;
+      color: #222;
     }
 
     .card-info {
       display: flex;
       justify-content: space-between;
-      color: #666;
       font-size: 0.85rem;
+      color: #777;
     }
 
     .divider {
-      margin: 15px 0;
+      margin: 12px 0;
       border: 0;
       border-top: 1px solid #f0f0f0;
     }
@@ -86,12 +82,9 @@
       display: block;
       text-align: center;
       color: $primary-color;
-      font-weight: bold;
+      font-weight: 700;
       text-decoration: none;
-      
-      &:hover {
-        text-decoration: underline;
-      }
+      font-size: 0.9rem;
     }
   }
 }

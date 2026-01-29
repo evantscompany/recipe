@@ -1,3 +1,5 @@
+# recipes.py
+
 from fastapi import APIRouter, Depends, Form, HTTPException, status, File, UploadFile
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -107,7 +109,7 @@ async def delete_recipe(
 
     return {"message": "레시피가 성공적으로 삭제되었습니다"}
 
-    #5. 레시피 수정하기
+#5. 레시피 수정하기
 @router.put("/{post_id}")
 async def update_recipe(
     post_id: int,
@@ -175,3 +177,21 @@ def get_post_detail(post_id: int, db: Session = Depends(get_db)):
     ).count()
 
     return post
+
+# 6. 내가 작성한 레시피 목록만 가져오기
+@router.get("/my/all") # 경로 충돌 피하기 위해 /my/all 로 설정
+async def get_my_recipes(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user) # 로그인 토큰 필수
+):
+    # 1) 현재 로그인한 유저의 ID로 필터링
+    posts = db.query(Post).filter(Post.user_id == current_user.id).all()
+
+    # 2) 각 포스트에 좋아요 개수 달아주기 (메인 페이지 로직과 동일)
+    for post in posts:
+        post.like_count = db.query(PostReaction).filter(
+            PostReaction.post_id == post.id,
+            PostReaction.reaction_type == "like"
+        ).count()
+        
+    return posts
