@@ -100,6 +100,7 @@ const RecipeDetail = () => {
   };
 
   const handleCommentDelete = async (commentId) => {
+    alert('삭제 확인용')
     if (!confirm("정말 삭제하시겠습니까?")) return;
     try {
       await commentApi.deleteComment(commentId);
