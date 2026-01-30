@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, NavLink } from 'react-router-dom';
 import './Navbar.scss';
 
 const Navbar = () => {
@@ -13,7 +13,6 @@ const Navbar = () => {
       localStorage.removeItem('access_token');
       localStorage.removeItem('username');
       localStorage.removeItem('userId');
-      // window.location.href 대신 navigate를 사용하여 부드럽게 이동 후 갱신
       navigate('/');
       window.location.reload();
     }
@@ -50,15 +49,23 @@ const Navbar = () => {
           <Link to="/" className="nav-logo">RECIPE</Link>
           
           <div className="nav-menu">
-            <Link to="/" className="nav-link active"><span>🏠</span> 홈</Link>
-            <Link to="/explore" className="nav-link"><span>🔍</span> 탐색</Link>
+            {/* NavLink를 사용하여 활성화 상태 자동 처리 */}
+            <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} end>
+              <span>🏠</span> 홈
+            </NavLink>
+            <NavLink to="/explore" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+              <span>🔍</span> 탐색
+            </NavLink>
             
-            {/* 로그인했을 때만 보이는 개인화 메뉴 */}
             {token && (
               <>
-                <Link to="/saved" className="nav-link"><span>❤️</span> 저장됨</Link>
-                <Link to="/my-recipes" className="nav-link"><span>📋</span> 내 레시피</Link>
-                {/* 📱 모바일에서 메뉴 바의 한 칸을 차지할 로그아웃 버튼 */}
+                <NavLink to="/saved" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                  <span>❤️</span> 저장됨
+                </NavLink>
+                <NavLink to="/my-recipes" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                  <span>📋</span> 내 레시피
+                </NavLink>
+                {/* 📱 모바일 하단바에서 한 자리를 차지할 로그아웃 버튼 */}
                 <button className="nav-link mobile-only-logout" onClick={handleLogout}>
                   <span>🚪</span> 로그아웃
                 </button>
@@ -66,12 +73,16 @@ const Navbar = () => {
             )}
 
             {!token && (
-              <Link to="/login" className="nav-link"><span>🔑</span> 로그인</Link>
+              <NavLink to="/login" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                <span>🔑</span> 로그인
+              </NavLink>
             )}
             
             <hr className="nav-divider" />
             
-            <Link to="/write" className="nav-link pink"><span>➕</span> 레시피 만들기</Link>
+            <NavLink to="/write" className={({ isActive }) => isActive ? "nav-link pink active" : "nav-link pink"}>
+              <span>➕</span> 작성
+            </NavLink>
           </div>
         </div>
 
