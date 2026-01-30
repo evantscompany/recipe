@@ -13,6 +13,7 @@ const RecipeDetail = () => {
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
   const [reactionStats, setReactionStats] = useState({
     likes: 0,
     dislikes: 0,
@@ -102,7 +103,11 @@ const RecipeDetail = () => {
       <article className="recipe-card">
         <img 
           className="recipe-main-image"
-          src={recipe.image_url?.startsWith('http') ? recipe.image_url : `http://localhost:8000${recipe.image_url}`} 
+          src={
+            recipe.image_url?.startsWith('http') 
+              ? recipe.image_url 
+              : `${API_BASE_URL}${recipe.image_url}` // ← localhost 대신 변수 사용!
+          } 
           alt={recipe.title} 
         />
 
