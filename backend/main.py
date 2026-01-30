@@ -22,12 +22,17 @@ app = FastAPI(title='Cooking Recipe API')
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://fabulous-caring-production.up.railway.app", # 방금 만든 프론트 주소
+    "http://localhost:3000", # 로컬 테스트용
 ]
+
+
+
 
 # 3. CORS 설정 적용
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],           # 허용할 출처
+    allow_origins=origins,           # 허용할 출처
     allow_credentials=True,         # 쿠키/인증정보 허용 여부
     allow_methods=["*"],             # 모든 HTTP 메서드(GET, POST 등) 허용
     allow_headers=["*"],             # 모든 헤더 허용
