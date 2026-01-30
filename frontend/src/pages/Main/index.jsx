@@ -12,6 +12,7 @@ const Main = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('전체');
   const categories = ['전체', '한식', '일식', '중식', '양식', '디저트'];
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
   // 로직 분리: API 호출 함수
   const fetchRecipes = useCallback(async (searchKeyword, cat) => {
@@ -91,7 +92,7 @@ const Main = () => {
                   src={
                     recipe.image_url?.startsWith('http') 
                     ? recipe.image_url 
-                    : `http://localhost:8000${recipe.image_url}` 
+                    : `${API_BASE_URL}${recipe.image_url}` 
                   } 
                   alt={recipe.title} 
                   onError={(e) => {

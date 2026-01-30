@@ -48,5 +48,6 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     return {
         "access_token": access_token, 
         "token_type": "bearer",
-        "username" : user.username #프론트에서 쓰기 편하게 유저이름 보내기
+        "username" : user.username, #프론트에서 쓰기 편하게 유저이름 보내기
+        "user_id" : user.id
         }

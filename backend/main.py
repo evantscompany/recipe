@@ -38,6 +38,10 @@ app.add_middleware(
     allow_headers=["*"],             # 모든 헤더 허용
 )
 
+upload_dir = "app/static"
+if not os.path.exists(upload_dir):
+    os.makedirs(upload_dir)
+
 
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
 app.include_router(recipes.router, prefix="/api/v1/recipes", tags=["recipes"])

@@ -11,6 +11,7 @@ const Navbar = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('username');
+      localStorage.removeItem('userId');
       window.location.href = "/";
     }
   };

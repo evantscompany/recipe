@@ -9,22 +9,33 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const data = await authApi.login(email, password);
+  e.preventDefault();
+  try {
+    const data = await authApi.login(email, password);
+    
+    // 🔍 디버깅: 콘솔에 찍힌 데이터에 user_id가 숫자로 있는지 확인!
+    console.log("로그인 응답 데이터:", data);
+
+    if (data.access_token) {
+      localStorage.setItem('access_token', data.access_token);
+      localStorage.setItem('username', data.username);
       
-      if (data.access_token) {
-        localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('username', data.username);
-        
-        alert(`${data.username}님, 환영합니다!`);
-        navigate('/'); 
-        window.location.reload(); 
+      // ⚠️ 백엔드에서 보낸 이름이 'user_id'이므로 정확히 맞춰야 합니다.
+      if (data.user_id !== undefined) {
+        localStorage.setItem('userId', String(data.user_id));
+        console.log("userId 저장 완료:", data.user_id);
+      } else {
+        console.error("서버 응답에 user_id가 없습니다. 백엔드 코드를 확인하세요.");
       }
-    } catch (err) {
-      alert('로그인 실패! 이메일이나 비밀번호를 확인해주세요.');
+      
+      alert(`${data.username}님, 환영합니다!`);
+      navigate('/'); 
+      window.location.reload(); 
     }
-  };
+  } catch (err) {
+    alert('로그인 실패! 정보를 확인해주세요.');
+  }
+};
 
   return (
     <div className="auth-page">

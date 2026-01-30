@@ -15,7 +15,7 @@ const RecipeDetail = () => {
   const [newComment, setNewComment] = useState("");
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
   
-  // 현재 로그인한 유저 정보 (localStorage 키값이 'userId'라고 가정)
+  // 현재 로그인한 유저 정보 (localStorage 키값이 'userId'인 것을 확인)
   const currentUserId = Number(localStorage.getItem('userId'));
 
   const [reactionStats, setReactionStats] = useState({
@@ -120,7 +120,7 @@ const RecipeDetail = () => {
         </button>
 
         {/* 🆕 작성자 본인일 때만 노출되는 컨트롤 영역 */}
-        {recipe.user_id === currentUserId && (
+        {recipe && recipe.user_id === currentUserId && (
           <div className="recipe-admin-controls">
             <button 
               className="edit-btn" 
