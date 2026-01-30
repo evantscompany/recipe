@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Navbar.scss'
+import './Navbar.scss';
 
 const Navbar = () => {
   const [timeLeft, setTimeLeft] = useState("");
   const token = localStorage.getItem('access_token');
   const username = localStorage.getItem('username');
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('username');
       localStorage.removeItem('userId');
-      window.location.href = "/";
+      // window.location.href 대신 navigate를 사용하여 부드럽게 이동 후 갱신
+      navigate('/');
+      window.location.reload();
     }
   };
 
@@ -42,30 +45,32 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="nav-container">
-        {/* 상단 로고 및 메인 메뉴 */}
+        {/* 상단 섹션 */}
         <div className="nav-top-section">
           <Link to="/" className="nav-logo">RECIPE</Link>
+          
           <div className="nav-menu">
             <Link to="/" className="nav-link active"><span>🏠</span> 홈</Link>
             <Link to="/explore" className="nav-link"><span>🔍</span> 탐색</Link>
-            {/* 모바일에서만 보일 로그아웃 버튼 예시 */}
-            {user && (
-              <button className="logout-btn-wrapper" onClick={handleLogout}>
-                <span className="logout-icon">🚪</span>
-                <span className="logout-text">로그아웃</span>
-              </button>
-            )}
+            
             {/* 로그인했을 때만 보이는 개인화 메뉴 */}
             {token && (
               <>
                 <Link to="/saved" className="nav-link"><span>❤️</span> 저장됨</Link>
                 <Link to="/my-recipes" className="nav-link"><span>📋</span> 내 레시피</Link>
+                {/* 📱 모바일에서 메뉴 바의 한 칸을 차지할 로그아웃 버튼 */}
+                <button className="nav-link mobile-only-logout" onClick={handleLogout}>
+                  <span>🚪</span> 로그아웃
+                </button>
               </>
+            )}
+
+            {!token && (
+              <Link to="/login" className="nav-link"><span>🔑</span> 로그인</Link>
             )}
             
             <hr className="nav-divider" />
             
-            {/* 중요 액션 버튼 */}
             <Link to="/write" className="nav-link pink"><span>➕</span> 레시피 만들기</Link>
           </div>
         </div>

@@ -88,88 +88,67 @@
   // 📱 모바일 대응 (768px 이하) - 중첩 수정 완료
   // ==========================================
   @media (max-width: 768px) {
+  .navbar {
     top: auto;
     bottom: 0;
-    left: 0;
-    width: 100vw;
-    height: auto; // 내용물에 따라 높이 자동 조절 (최대 85px 정도)
-    padding: 8px 0;
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
     border-right: none;
     border-top: 1px solid #eee;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(10px);
-    z-index: 2000;
 
     .nav-container {
-      flex-direction: column; // 위(타이머) / 아래(메뉴) 구조로 변경
+      flex-direction: column-reverse; // 타이머가 메뉴 위로 오게 배치
       gap: 8px;
-      padding: 0;
     }
 
-    // 1. 타이머를 하단 바 바로 위에 작고 얇게 배치
-    .nav-timer {
-      display: flex !important; // 모바일에서도 강제 노출
-      flex-direction: row !important;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      background: #fff5f6; // 연한 핑크 배경
-      padding: 4px 12px;
-      border-radius: 20px;
-      border: none;
-      width: fit-content;
-      margin: 0 auto; // 중앙 정렬
-
-      .label { font-size: 0.6rem; color: #E60023; }
-      .time { font-size: 0.8rem; font-weight: 800; }
-    }
-
-    // 로고와 기존 큰 유저카드는 여전히 숨김 (공간 부족)
-    .nav-logo, .nav-divider, .nav-auth-links {
-      display: none !important;
+    .nav-logo, .nav-divider, .user-info, .nav-auth-links {
+      display: none !important; // 불필요한 요소 숨김
     }
 
     .nav-menu {
-      flex-direction: row;
+      flex-direction: row !important;
       width: 100%;
       justify-content: space-around;
-      align-items: flex-end;
+      gap: 0;
 
-      .nav-link {
+      .nav-link, .mobile-only-logout {
         flex: 1;
         flex-direction: column;
         align-items: center;
-        gap: 2px;
-        font-size: 0.6rem;
-        color: #888;
-        background: none !important;
-
-        span { font-size: 1.4rem; }
-        &.active { color: #E60023; }
-        &.pink { color: #E60023; margin-top: 0; }
-      }
-
-      // 2. 로그아웃 버튼을 메뉴의 마지막 아이콘으로 추가
-      // (JSX에서 로그아웃 버튼에 .nav-link 클래스를 주거나 스타일을 맞춰야 합니다)
-      .logout-btn-wrapper {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        font-size: 0.65rem;
         background: none;
         border: none;
+        padding: 5px 0;
         color: #888;
-        cursor: pointer;
-
-        .logout-icon { font-size: 1.4rem; }
-        .logout-text { font-size: 0.6rem; font-weight: 600; }
+        
+        span { font-size: 1.5rem; margin-bottom: 2px; }
+        &.active { color: #E60023; font-weight: 700; }
+        &.pink { color: #E60023; }
       }
     }
 
-    // 로그인하지 않은 사용자를 위한 유저카드 처리
+    // 타이머를 캡슐 형태로 메뉴 바 위에 배치
     .nav-user-card {
-      display: none !important; // 큰 카드는 숨기고 버튼만 따로 처리 권장
+      display: flex !important;
+      background: none;
+      padding: 0;
+      margin: 0 auto;
+
+      .nav-timer {
+        display: flex !important;
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        background: #fff5f6;
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid #ffebeb;
+
+        .label { font-size: 0.6rem; color: #E60023; white-space: nowrap; }
+        .time { font-size: 0.8rem; font-weight: 700; color: #222; }
+      }
     }
   }
+}
 }
