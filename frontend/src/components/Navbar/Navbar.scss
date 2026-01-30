@@ -147,41 +147,71 @@
   // 📱 모바일 대응 (768px 이하)
   // ==========================================
   @media (max-width: 768px) {
+  .navbar {
     top: auto;
-    bottom: 0; // 하단으로 이동
-    width: 100%;
-    height: 70px; // 탭바 높이
-    padding: 0 10px;
+    bottom: 0;
+    left: 0;
+    width: 100vw; // 화면 꽉 차게
+    height: 70px;
+    padding: 0; // 패딩 제거
     border-right: none;
-    border-top: 1px solid #f0f0f0;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+    border-top: 1px solid #eee;
+    background: rgba(255, 255, 255, 0.95); // 살짝 투명하게
+    backdrop-filter: blur(10px); // 뒤 배경 흐리게 (고급 효과)
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 
     .nav-container {
-      flex-direction: row; // 가로 정렬
-      align-items: center;
+      flex-direction: row;
       justify-content: space-around;
+      align-items: center;
+      height: 100%;
+      padding: 0 10px;
     }
 
+    // 모바일에서 지저분해 보이는 요소들 제거
     .nav-logo, .nav-divider, .nav-user-card, .nav-auth-links, .nav-timer {
-      display: none !important; // 모바일에서 불필요한 요소 숨김
+      display: none !important;
     }
 
     .nav-menu {
-      flex-direction: row; // 메뉴 가로 배치
+      flex-direction: row;
       width: 100%;
+      height: 100%;
       justify-content: space-around;
+      align-items: center;
       gap: 0;
 
       .nav-link {
-        flex-direction: column; // 아이콘과 텍스트 수직 정렬 (선택사항)
+        flex: 1; // 공간 균등 배분
+        flex-direction: column; // 아이콘 위, 글자 아래
+        justify-content: center;
         gap: 4px;
-        padding: 8px;
-        font-size: 0.7rem; // 글자 크기 축소
-        
-        span { font-size: 1.4rem; } // 아이콘은 크게
+        height: 100%;
+        padding: 0;
+        border-radius: 0;
+        font-size: 0.65rem; // 글자는 작게
+        color: #888;
+
+        span { 
+          font-size: 1.5rem; // 아이콘은 크게
+          margin: 0;
+        }
+
         &:hover { transform: none; background: none; }
-        &.active { background: none; color: #E60023; }
-        &.pink { margin-top: 0; background: none; color: #E60023; }
+
+        // 활성화된 메뉴 포인트
+        &.active {
+          background: none;
+          color: #E60023; // 아이콘과 글자 모두 레드
+          font-weight: 700;
+        }
+
+        // '레시피 작성' 버튼만 튀어 보이게 (선택사항)
+        &.pink {
+          background: none;
+          color: #E60023;
+          margin-top: 0;
+        }
       }
     }
   }
