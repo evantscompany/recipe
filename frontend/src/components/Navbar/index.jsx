@@ -3,13 +3,13 @@ import { Link, useNavigate, NavLink } from 'react-router-dom';
 import './Navbar.scss';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false); // 모바일 메뉴 상태
+  const [isOpen, setIsOpen] = useState(false); // 모바일 메뉴 열림 상태
   const [timeLeft, setTimeLeft] = useState("");
   const token = localStorage.getItem('access_token');
   const username = localStorage.getItem('username');
   const navigate = useNavigate();
 
-  // 메뉴 닫기용 함수
+  // 모바일 메뉴 제어 함수
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
@@ -48,16 +48,17 @@ const Navbar = () => {
 
   return (
     <>
-      {/* 📱 모바일 전용 플로팅 버튼 */}
+      {/* 📱 모바일 전용 플로팅 버튼 (FAB) */}
       <button className={`nav-mobile-fab ${isOpen ? 'active' : ''}`} onClick={toggleMenu}>
         {isOpen ? '✕' : '☰'}
       </button>
 
-      {/* 메뉴 열렸을 때 배경 어둡게 */}
+      {/* 모바일 메뉴 열림 시 배경 어둡게 */}
       {isOpen && <div className="nav-mobile-overlay" onClick={closeMenu}></div>}
 
       <nav className={`navbar ${isOpen ? 'mobile-open' : ''}`}>
         <div className="nav-container">
+          {/* 상단 섹션 */}
           <div className="nav-top-section">
             <Link to="/" className="nav-logo" onClick={closeMenu}>RECIPE</Link>
             
@@ -97,6 +98,7 @@ const Navbar = () => {
             </div>
           </div>
 
+          {/* 하단 유저/상태 영역 */}
           <div className="nav-bottom-section">
             {token ? (
               <div className="nav-user-card">

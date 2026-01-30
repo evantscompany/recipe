@@ -100,7 +100,7 @@ const RecipeDetail = () => {
   };
 
   const handleCommentDelete = async (commentId) => {
-    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+    if (!confirm("정말 삭제하시겠습니까?")) return;
     try {
       await commentApi.deleteComment(commentId);
       setComments(comments.filter(c => c.id !== commentId));
