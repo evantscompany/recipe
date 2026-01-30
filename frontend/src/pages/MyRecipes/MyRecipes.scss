@@ -1,49 +1,127 @@
 @use "../../styles/variables" as *;
 
 .my-recipes-page {
-  padding: 40px;
+  padding: 60px 20px;
   max-width: 1200px;
   margin: 0 auto;
-  animation: fadeIn 0.5s ease-in-out;
+  min-height: 80vh;
+  animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 
   .page-header {
-    margin-bottom: 50px;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 30px;
+    text-align: center; // 헤더 중앙 정렬로 변경
+    margin-bottom: 60px;
+    position: relative;
 
     h1 {
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: #222;
-      margin-bottom: 10px;
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #1a1a1a;
+      margin-bottom: 15px;
+      letter-spacing: -1px;
+      
+      &::after { // 포인트 언더라인 추가
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: $primary-color;
+        margin: 15px auto 0;
+        border-radius: 2px;
+      }
     }
 
     p {
-      color: #666;
-      font-size: 1.1rem;
-      strong { color: $primary-color; }
+      color: #777;
+      font-size: 1.2rem;
+      font-weight: 400;
+      
+      strong { 
+        color: $primary-color; 
+        font-weight: 700;
+        font-size: 1.3rem;
+      }
     }
   }
 
   .recipe-grid {
     display: grid;
+    // 반응형 대응: 화면 크기에 따라 1~4열 자동 조정
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 30px;
+    gap: 40px; // 간격을 넓혀 시원하게 배치
+    padding: 10px;
   }
 
+  // 데이터가 없을 때의 감성적인 디자인
   .empty-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 100px 20px;
-    background: #fdfdfd;
-    border: 2px dashed #eee;
-    border-radius: 30px;
-    color: #999;
-    font-size: 1.1rem;
-    line-height: 1.6;
+    padding: 120px 20px;
+    background: linear-gradient(145deg, #ffffff, #f5f5f5);
+    border-radius: 40px;
+    box-shadow: inset 10px 10px 20px #e6e6e6, inset -10px -10px 20px #ffffff;
+    
+    &::before {
+      content: '🍳';
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    p {
+      color: #888;
+      font-size: 1.2rem;
+      margin: 5px 0;
+      font-weight: 500;
+    }
+
+    .write-btn-link { // 나중에 추가할 버튼 스타일 미리 정의
+      margin-top: 25px;
+      padding: 12px 30px;
+      background: $primary-color;
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      &:hover { transform: scale(1.05); filter: brightness(1.1); }
+    }
   }
 }
 
+// 로딩 애니메이션
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 1.2rem;
+  color: $primary-color;
+  font-weight: 600;
+  &::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 3px solid #eee;
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    margin-left: 15px;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+// 모바일 대응
+@media (max-width: 768px) {
+  .my-recipes-page {
+    padding: 40px 15px;
+    .page-header h1 { font-size: 2rem; }
+    .recipe-grid { gap: 20px; }
+  }
 }
