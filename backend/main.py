@@ -27,7 +27,7 @@ origins = [
 # 3. CORS 설정 적용
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,           # 허용할 출처
+    allow_origins=['*'],           # 허용할 출처
     allow_credentials=True,         # 쿠키/인증정보 허용 여부
     allow_methods=["*"],             # 모든 HTTP 메서드(GET, POST 등) 허용
     allow_headers=["*"],             # 모든 헤더 허용
