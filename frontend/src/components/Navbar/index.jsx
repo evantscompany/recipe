@@ -48,7 +48,13 @@ const Navbar = () => {
           <div className="nav-menu">
             <Link to="/" className="nav-link active"><span>🏠</span> 홈</Link>
             <Link to="/explore" className="nav-link"><span>🔍</span> 탐색</Link>
-            
+            {/* 모바일에서만 보일 로그아웃 버튼 예시 */}
+            {user && (
+              <button className="logout-btn-wrapper" onClick={handleLogout}>
+                <span className="logout-icon">🚪</span>
+                <span className="logout-text">로그아웃</span>
+              </button>
+            )}
             {/* 로그인했을 때만 보이는 개인화 메뉴 */}
             {token && (
               <>
