@@ -1,58 +1,62 @@
-Frontend: 확장 가능한 모던 아키텍처 및 UX 리팩토링
-"컴포넌트의 관심사를 명확히 분리하고, 직관적이며 세련된 디자인 시스템을 구축함"
+🏗️ 1. System Architecture & Tech Stack
+Backend: FastAPI (Python), SQLAlchemy (ORM)
 
-1. SCSS 모듈 아키텍처 및 디자인 시스템
-캡슐화 및 재사용성: 페이지별 전용 SCSS 파일을 1:1 매칭하여 스타일 오염을 방지하고, 변수와 믹스인(Mixin)을 적극 활용하여 디자인 일관성 유지.
+Database: MySQL (hosted on Railway)
 
-모던 UI 요소: 구식 폼 형식을 탈피하고 '라운드 캡슐형 버튼', '소프트 섀도우 카드 레이아웃', **'오버레이 애니메이션'**을 적용하여 시각적 즐거움 제공.
+Frontend: React (Vite), SCSS (Module Architecture)
 
-2. 컴포넌트 기반 아키텍처 (UI/UX)
-관심사 분리 (SoC): RecipeItem, CommentItem 등 공통 컴포넌트를 분리하여 유지보수성을 높이고, 부모 컴포넌트(RecipeDetail)는 데이터 통신에만 집중하도록 설계.
+Deployment: Railway (Full-stack: DB + API + Frontend)
 
-이미지 UX 최적화: 파일 선택 시 브라우저 메모리 내에서 즉시 작동하는 '이미지 미리보기' 기능과 이미지 로딩 실패 시 작동하는 '에러 핸들링(Fallback)' 로직 구현.
+💻 2. Frontend: 확장 가능한 모던 아키텍처 및 UX 리팩토링
+🎨 SCSS 모듈 아키텍처 및 디자인 시스템
+캡슐화 및 재사용성: 페이지별 전용 SCSS 파일을 1:1 매칭하여 스타일 오염을 방지하고, 변수와 믹스인(Mixin)을 활용하여 디자인 일관성 유지.
 
-3. 고도화된 인터랙션 처리
-상태 기반 UI (State-driven): 좋아요 클릭 시 전체 새로고침 없이 리액션 카운트와 버튼 활성 상태를 부분 업데이트하여 네이티브 앱과 같은 매끄러운 반응성 확보.
+모던 UI 요소: 구식 폼 형식을 탈피하고 '라운드 캡슐형 버튼', '소프트 섀도우 카드 레이아웃', **'오버레이 애니메이션'**을 적용.
 
-댓글 시스템 최적화: 인라인 수정 모드(isEditing)를 도입하여 페이지 이동 없이 댓글 작성/수정/삭제가 가능한 논스톱 커뮤니티 경험 제공.
+🧩 컴포넌트 기반 아키텍처 (UI/UX)
+관심사 분리 (SoC): RecipeItem, CommentItem 등 공통 컴포넌트를 분리하여 유지보수성을 높이고, RecipeDetail은 데이터 통신 및 상태 관리에 집중.
 
-🚀 주요 트러블슈팅 (Troubleshooting)
-[Backend] SQLAlchemy 객체 직렬화 및 스키마 이슈
-문제: DB 객체와 Pydantic 스키마 간의 불일치로 인해 응답 데이터가 누락되거나 에러가 발생하는 현상.
+이미지 UX 최적화: 파일 선택 시 브라우저 메모리 내에서 즉시 작동하는 '미리보기' 기능과 로딩 실패 시 작동하는 'Fallback(에러 핸들링)' 로직 구현.
 
-해결: Pydantic 모델에 from_attributes = True 설정을 적용하고, 상세 조회 시 joinedload와 유사한 명시적 객체 매핑을 통해 데이터 무결성 보장.
+⚡ 고도화된 인터랙션 처리
+상태 기반 UI (State-driven): 좋아요/싫어요 클릭 시 전체 새로고침 없이 리액션 카운트와 활성 상태를 부분 업데이트하여 네이티브 앱과 같은 반응성 확보.
 
-[Frontend] 이미지 경로 처리 및 보안 정책
-문제: 로컬 저장소에 저장된 이미지의 상대 경로를 브라우저가 직접 인식하지 못하는 이슈.
+논스톱 커뮤니티 경험: 인라인 수정 모드(isEditing)를 도입하여 페이지 이동 없이 댓글 작성/수정/삭제가 가능한 시스템 구축.
 
-해결: recipe.image_url.startsWith('http') 조건문을 활용하여 외부 이미지와 로컬 서버 주소(http://localhost:8000)를 동적으로 결합하는 경로 처리 로직 구축.
-
-[UI/UX] 로그인 직후 인증 상태 동기화
-문제: 로그인을 완료하여 로컬 스토리지에 토큰은 저장되었으나, 상단 내비게이션 바의 유저 정보가 새로고침 전까지 바뀌지 않는 현상.
-
-해결: 로그인 성공 핸들러에서 window.location.reload()를 호출하거나, 토큰 정보를 기반으로 한 상태 업데이트 로직을 보강하여 즉각적인 UI 반영 완료.
-
-주요 트러블슈팅 (추가 내용)
-[API/Network] 쿼리 파라미터 연동 및 CORS 연쇄 에러
-
-문제: 프론트엔드에서 검색어(search)와 카테고리(category) 상태를 변경해도 백엔드 데이터가 필터링되지 않고 항상 전체 목록만 반환됨. 또한, 백엔드 내부 로직 에러 시 브라우저에서 CORS/CORB 정책 위반으로 응답을 차단하여 원인 파악이 어려웠던 현상.
-
-원인:
-
-API 인터페이스 불일치: recipeApi.js 내의 getRecipes 함수가 인자를 받지 않도록 설계되어, 프론트의 검색어 상태가 Axios 요청의 쿼리 스트링(params)으로 전달되지 않음.
-
-라우팅 충돌: 백엔드에서 ?search= 쿼리 파라미터를 경로 파라미터(/{post_id})로 오인하여 500 에러를 발생시킴.
+🚀 3. 주요 트러블슈팅 (Troubleshooting)
+📂 [Deployment] 서비스 통합 및 환경 변수 관리
+문제: 로컬 환경의 localhost:8000 주소가 배포 후에도 남아있어 이미지 엑박 및 API 통신 거부(ERR_CONNECTION_REFUSED) 발생.
 
 해결:
 
-Axios 인터셉터 보완: recipeApi.js에서 인자를 받아 params: { search, category } 객체를 명시적으로 전달하도록 수정하여 ?key=value 형태의 동적 URL 생성.
+환경 변수(Environment Variables) 도입: VITE_API_BASE_URL을 통해 개발 환경과 배포 환경(Railway)의 엔드포인트를 동적으로 전환.
 
-서버 사이드 쿼리 빌더 최적화: SQLAlchemy의 query.filter()를 조건부로 체이닝(Chaining)하여 검색어 유무에 따라 유연하게 SQL이 생성되도록 로직 교정.
+이미지 경로 동적 결합: recipe.image_url.startsWith('http') 조건문을 활용하여 외부 URL과 서버 내 정적 파일 경로를 유연하게 결합.
 
-에러 핸들링: 백엔드에 try-except와 traceback 로그를 심어 500 에러 발생 시 CORS 차단 뒤에 숨겨진 실제 시스템 에러를 즉시 파악할 수 있는 환경 구축.
+🌐 [API/Network] 쿼리 파라미터 및 CORS 연쇄 에러
+문제: 검색/카테고리 필터 미작동 및 백엔드 에러 발생 시 브라우저에서 CORS 정책 위반으로 응답을 차단하여 원인 파악이 어려움.
 
-[UX] 성능 최적화를 위한 디바운싱(Debouncing) 적용
+원인: recipeApi.js 인터페이스 불일치 및 쿼리 파라미터를 경로 파라미터로 오인한 라우팅 충돌.
 
-문제: 검색어 입력창에 한 글자를 칠 때마다 API 요청이 발생하여 서버 부하가 가중되고 네트워킹 리소스가 낭비되는 이슈.
+해결:
 
-해결: useEffect와 setTimeout을 조합한 디바운싱 로직을 구현하여, 사용자의 입력이 멈춘 후 400ms가 지났을 때만 최종 API 요청을 보내도록 최적화.
+Axios 인터셉터 보완: params: { search, category } 객체를 명시적으로 전달하도록 수정.
+
+SQLAlchemy 쿼리 빌더 최적화: filter()를 조건부로 체이닝하여 유연한 SQL 생성.
+
+CORS 설정: CORSMiddleware를 통해 배포된 프론트엔드 도메인(fabulous-caring-production.up.railway.app)의 접근을 명시적으로 허용.
+
+💾 [Backend] 데이터 직렬화 및 스키마 이슈
+문제: DB 객체와 Pydantic 모델 간 불일치로 데이터 누락 발생.
+
+해결: Pydantic 모델에 from_attributes = True 설정 적용 및 상세 조회 시 명시적 객체 매핑을 통해 데이터 무결성 보장.
+
+⏱️ [Performance] 디바운싱(Debouncing) 적용
+문제: 검색어 입력 시 매 글자마다 API가 호출되어 서버 부하 가중.
+
+해결: setTimeout을 조합한 디바운싱 로직(400ms)을 구현하여 네트워크 리소스 낭비 방지.
+
+⚠️ 4. 향후 과제 (Roadmap)
+이미지 저장소 최적화: 현재 Railway의 휘발성 파일 시스템 대신 Cloudinary 또는 AWS S3 연동 검토.
+
+사용자 인증 고도화: JWT 토큰 만료 처리 및 리프레시 토큰 로직 보강.

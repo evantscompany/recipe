@@ -14,11 +14,29 @@ const RecipeDetail = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+  
+  // 현재 로그인한 유저 정보 (localStorage 키값이 'userId'라고 가정)
+  const currentUserId = Number(localStorage.getItem('userId'));
+
   const [reactionStats, setReactionStats] = useState({
     likes: 0,
     dislikes: 0,
     myReaction: null 
   });
+
+  // 🆕 레시피 삭제 핸들러 (기존 로직 유지하며 추가)
+  const handleRecipeDelete = async () => {
+    if (!window.confirm("정말로 이 레시피를 삭제하시겠습니까?")) return;
+    
+    try {
+      await recipeApi.deleteRecipe(id);
+      alert("레시피가 성공적으로 삭제되었습니다.");
+      navigate('/', { replace: true });
+    } catch (error) {
+      console.error("삭제 실패:", error);
+      alert(error.response?.data?.detail || "삭제 권한이 없거나 오류가 발생했습니다.");
+    }
+  };
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -96,9 +114,29 @@ const RecipeDetail = () => {
 
   return (
     <div className="recipe-detail-page">
-      <button className="back-btn" onClick={() => navigate(-1)}>
-        ← 뒤로가기
-      </button>
+      <div className="detail-header-nav">
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          ← 뒤로가기
+        </button>
+
+        {/* 🆕 작성자 본인일 때만 노출되는 컨트롤 영역 */}
+        {recipe.user_id === currentUserId && (
+          <div className="recipe-admin-controls">
+            <button 
+              className="edit-btn" 
+              onClick={() => navigate(`/recipes/edit/${id}`)}
+            >
+              수정하기
+            </button>
+            <button 
+              className="delete-btn" 
+              onClick={handleRecipeDelete}
+            >
+              삭제하기
+            </button>
+          </div>
+        )}
+      </div>
 
       <article className="recipe-card">
         <img 
@@ -106,7 +144,7 @@ const RecipeDetail = () => {
           src={
             recipe.image_url?.startsWith('http') 
               ? recipe.image_url 
-              : `${API_BASE_URL}${recipe.image_url}` // ← localhost 대신 변수 사용!
+              : `${API_BASE_URL}${recipe.image_url}`
           } 
           alt={recipe.title} 
         />
