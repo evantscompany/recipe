@@ -11,6 +11,8 @@ import os
 import app.schemas.post as RecipeDetailResponse
 from app.schemas.post import PostDetail
 from app.models.reaction import PostReaction
+from sqlalchemy import or_ #검색을 위한 or_조건 임포트
+from typing import Optional #타입 힌트용
 
 
 router = APIRouter()
@@ -20,10 +22,30 @@ Upload_DIR = "app/static/uploads/"
 if not os.path.exists(Upload_DIR):
     os.makedirs(Upload_DIR)
 
-#1. 모든 레시피 목록 가져오기
+#1. 모든 레시피 목록 가져오기(검색 및 필터링도 추가)
 @router.get("/")
-def get_recipes(db: Session = Depends(get_db)):
-    posts = db.query(Post).all()
+def get_recipes(
+    db: Session = Depends(get_db),
+    search : Optional[str] = None,  #프론트엔드 쿼리 파라미터
+    category : Optional[str] = None #프론트엔드 쿼리 파라미터
+    ):
+
+    query = db.query(Post)
+
+    # 카테고리 필터링 
+    if category and category !="전체":
+        query = query.filter(Post.category == category)
+
+    # 검색어 필터링 (제목 또는 내용에 키워드 포함시)
+    if search:
+        query = query.filter(
+            or_(
+                Post.title.contains(search),
+                Post.content.contains(search)
+            )
+        )
+    #최종결과 
+    posts = query.all()
 
     #각 포스트 객체에 실시간 좋아요 개수 달아주기
     for post in posts:

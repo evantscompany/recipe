@@ -5,7 +5,12 @@ export const recipeApi = {
   createRecipe:(formData) =>api.post('/api/v1/recipes/',formData),
   
   // 게시글 전체 목록 가져오기
-  getRecipes: () => api.get('/api/v1/recipes/'),
+  getRecipes: (search, category) => api.get('/api/v1/recipes/', {
+    params: {
+      search: search,    // 백엔드의 search 인자와 매칭
+      category: category // 백엔드의 category 인자와 매칭
+    }
+  }),
   
   // 내 레시피 목록 가져오기
   getMyRecipes: () => api.get('/api/v1/recipes/my/all'),
