@@ -1,4 +1,4 @@
-@use '../../styles/variables' as *;
+@use "../../styles/variables" as *;
 
 .navbar {
   position: fixed;
@@ -14,7 +14,7 @@
   .nav-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; // 상단 메뉴와 하단 유저섹션을 양 끝으로
+    justify-content: space-between;
     height: 100%;
   }
 
@@ -23,7 +23,7 @@
     display: block;
     font-size: 1.8rem;
     font-weight: 900;
-    color: #E60023; // 핀터레스트 레드
+    color: #E60023; 
     text-decoration: none;
     margin-bottom: 50px;
     letter-spacing: -1px;
@@ -60,13 +60,11 @@
         transform: translateX(5px);
       }
 
-      // 현재 활성화된 메뉴 스타일
       &.active {
         background-color: #f0f0f0;
         color: #000;
       }
 
-      // 레시피 작성 버튼 (포인트 컬러)
       &.pink {
         background-color: #E60023;
         color: white;
@@ -81,7 +79,7 @@
     }
   }
 
-  // 3. 하단 유저 카드 (로그인 상태)
+  // 3. 하단 유저 카드
   .nav-user-card {
     background-color: #f8f9fa;
     border-radius: 20px;
@@ -98,20 +96,13 @@
       padding: 10px;
       border-radius: 12px;
       border: 1px solid #eee;
-
       .label { font-size: 0.7rem; color: #999; font-weight: 600; }
       .time { font-family: 'monospace'; font-weight: bold; color: #E60023; }
     }
 
     .user-info {
       text-align: center;
-      .username { 
-        display: block; 
-        margin-bottom: 12px; 
-        font-weight: 700; 
-        color: #222; 
-      }
-      
+      .username { display: block; margin-bottom: 12px; font-weight: 700; color: #222; }
       .logout-btn {
         width: 100%;
         padding: 12px;
@@ -122,17 +113,12 @@
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s;
-
-        &:hover {
-          background-color: #333;
-          color: white;
-          border-color: #333;
-        }
+        &:hover { background-color: #333; color: white; border-color: #333; }
       }
     }
   }
 
-  // 4. 로그인/회원가입 버튼 (비로그인 상태) - 캡슐형으로 개선
+  // 4. 로그인/회원가입 버튼
   .nav-auth-links {
     display: flex;
     flex-direction: column;
@@ -142,38 +128,60 @@
     border-radius: 24px;
 
     .auth {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 48px;
-      border-radius: 24px;
-      font-size: 1rem;
-      font-weight: 700;
-      text-decoration: none;
-      transition: all 0.2s ease;
+      display: flex; align-items: center; justify-content: center;
+      height: 48px; border-radius: 24px; font-size: 1rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s ease;
 
-      // 로그인 (상단 버튼)
       &:not(.border) {
-        background-color: white;
-        color: #333;
-        border: 1px solid #ddd;
-
-        &:hover {
-          background-color: #eee;
-        }
+        background-color: white; color: #333; border: 1px solid #ddd;
+        &:hover { background-color: #eee; }
       }
-
-      // 회원가입 (하단 버튼 - 레드 포인트)
       &.border {
-        background-color: #E60023;
-        color: white;
-        border: none;
+        background-color: #E60023; color: white; border: none;
+        &:hover { background-color: #ad001a; box-shadow: 0 4px 12px rgba(230, 0, 35, 0.2); transform: translateY(-2px); }
+      }
+    }
+  }
 
-        &:hover {
-          background-color: #ad001a;
-          box-shadow: 0 4px 12px rgba(230, 0, 35, 0.2);
-          transform: translateY(-2px);
-        }
+  // ==========================================
+  // 📱 모바일 대응 (768px 이하)
+  // ==========================================
+  @media (max-width: 768px) {
+    top: auto;
+    bottom: 0; // 하단으로 이동
+    width: 100%;
+    height: 70px; // 탭바 높이
+    padding: 0 10px;
+    border-right: none;
+    border-top: 1px solid #f0f0f0;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+
+    .nav-container {
+      flex-direction: row; // 가로 정렬
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    .nav-logo, .nav-divider, .nav-user-card, .nav-auth-links, .nav-timer {
+      display: none !important; // 모바일에서 불필요한 요소 숨김
+    }
+
+    .nav-menu {
+      flex-direction: row; // 메뉴 가로 배치
+      width: 100%;
+      justify-content: space-around;
+      gap: 0;
+
+      .nav-link {
+        flex-direction: column; // 아이콘과 텍스트 수직 정렬 (선택사항)
+        gap: 4px;
+        padding: 8px;
+        font-size: 0.7rem; // 글자 크기 축소
+        
+        span { font-size: 1.4rem; } // 아이콘은 크게
+        &:hover { transform: none; background: none; }
+        &.active { background: none; color: #E60023; }
+        &.pink { margin-top: 0; background: none; color: #E60023; }
       }
     }
   }
